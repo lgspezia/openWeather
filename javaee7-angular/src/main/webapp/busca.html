@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- Declares the root element that allows behaviour to be modified through Angular custom HTML tags. -->
+<html lang="pt-br">
+	
+	<head>
+	    <title>Cadastro de Musicas</title>
+	
+	    <!-- build:css css/third-party.css -->
+	    <!-- bower:css -->
+	    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+	    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+	    <!-- endbower -->
+	    <!-- endbuild -->
+	
+	    <!-- build:css css/application.css -->
+	    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+	    <!-- endbuild -->
+	
+	    <!-- build:js lib/third-party.js -->
+	    <!-- bower:js -->
+	    <script src="lib/dependencies/jquery.js"></script>
+	    <script src="lib/dependencies/angular.js"></script>
+	    <script src="lib/dependencies/angular-resource.min.js"></script>
+	    <script src="lib/dependencies/ng-grid-2.0.11.min.js"></script>
+	    <script src="lib/dependencies/ui-bootstrap-tpls-imovel.min.js"></script>
+		<script src="lib/dependencies/script-busca.js"></script>
+	    <!-- endbower -->
+	    <!-- endbuild -->
+	    
+	    <!-- endbuild -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+		<!-- <script src="script/imovel.js"></script> -->
+	    
+	</head>
+	
+	 <body ng-app="instantSearch" ng-controller="InstantSearchController"> 
+		<!-- <body ng-app="imoveis" > -->
+			<br/>
+			
+	<div class="grid">
+
+	    <!-- Binds the grid component to be displayed. -->
+	    <div class="gridStyle" ng-grid="gridOptions"></div>
+	
+	    <!--  Bind the pagination component to be displayed. -->
+	    <pagination direction-links="true" boundary-links="true"
+	                total-items="imoveis.totalResultados" items-per-page="imoveis.tamanhoPagina"
+	                ng-model="imoveis.paginaAtual" ng-change="refreshGrid()">
+	    </pagination>	 
+	</div>
+			
+		<br/>
+			<h3>Busca Musicas</h3>
+			<div class="form-group" >
+				<!-- Crie uma ligação entre o modelo searchString e o campo de texto -->
+				<input id="busca" name="busca" type="text" class="form-control" maxlength="33" ng-model="searchString"  ng-maxlength="33" placeholder="Digite seu termo de pesquisa"/>
+			</div>
+		<br/>
+			<ul>
+				<!-- Renderize um elemento li para cada entrada no array de itens. Note o filtro de busca customizado "searchFor". Ele pega o valor do modelo searchString como um argumento. -->
+				<li ng-repeat="i in items | searchFor:searchString">
+					<a href="{{ i.url }}"><img ng-src="{{ i.image }}"></a><p>{{ i.title }}</p>
+				</li>
+			</ul>
+	
+		<br/>
+		
+		<!-- Specify a Angular controller script that binds Javascript variables to the feedback messages.-->
+		<div class="message" ng-controller="alertMessagesController">
+		    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+		</div>
+		
+		<br>
+		<!-- Specify a Angular controller script that binds Javascript variables to the grid.-->
+		<div class="grid" ng-controller="ImovelSearchController">
+	    
+	    <ul>
+		    <li ng-repeat="i in items">
+			<a href="{{ i.id }}"><img ng-src="{{ i.name }}"></a><p>{{ i.title }}</p>
+	        </li>
+        </ul>
+	    	<button type="button" class="btn btn-primary" ng-hide="imovelForm.$invalid" >Buscar</button>
+		</div>
+				
+	</body>	
+</html>

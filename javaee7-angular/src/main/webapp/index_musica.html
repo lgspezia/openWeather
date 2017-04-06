@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!-- Declares the root element that allows behaviour to be modified through Angular custom HTML tags. -->
+<html ng-app="imoveis">
+<head>
+    <title>Cadastro de Musicas</title>
+
+    <!-- build:css css/third-party.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!-- endbuild -->
+
+    <!-- build:js lib/third-party.js -->
+    <!-- bower:js -->
+    <script src="lib/dependencies/jquery.js"></script>
+    <script src="lib/dependencies/angular.js"></script>
+    <script src="lib/dependencies/angular-resource.min.js"></script>
+    <script src="lib/dependencies/ng-grid-2.0.11.min.js"></script>
+    <script src="lib/dependencies/ui-bootstrap-tpls-imovel.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js script/all.js -->
+    <script src="script/imovel.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script> --> 
+    <!-- endbuild -->
+    
+</head>
+
+<body>
+
+<h1>Spezia Musicas - Cadastro</h1>
+<br/>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the feedback messages.-->
+<div class="message" ng-controller="alertMessagesController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<br>
+<!-- Specify a Angular controller script that binds Javascript variables to the grid.-->
+<div class="grid" ng-controller="imoveisListController">
+    <div>
+    <!-- internacionalizacao -->
+   <!--  <f:loadBundle basename="recursos.mensagens" var="msgs"/>
+        <h3><h:outputFormat value="#{msgs.prompt}">
+        	<f:param value="#{msgs.musica}"/>
+        </h3> -->
+        <h3>Lista de Musicas</h3>
+    </div>
+
+    <!-- Binds the grid component to be displayed. -->
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+
+    <!--  Bind the pagination component to be displayed. -->
+    <pagination direction-links="true" boundary-links="true"
+                total-items="imoveis.totalResultados" items-per-page="imoveis.tamanhoPagina"
+                ng-model="imoveis.paginaAtual" ng-change="refreshGrid()">
+    </pagination>
+ 
+ 	
+	</div>
+
+
+<!-- Specify a Angular controller script that binds Javascript variables to the form.-->
+<div class="form" ng-controller="imoveisFormController">
+    <!-- Verify person, if there is no id present, that we are Adding a Person -->
+    <div ng-if="imovel.id == null">
+        <h3>Adicionar uma Musica</h3>
+    </div>
+    <!-- Otherwise it's an Edit -->
+    <div ng-if="imovel.id != null">
+        <h3>Editar uma Musica</h3>
+    </div>
+
+    <div>
+        <!-- Specify the function to be called on submit and disable HTML5 validation, since we're using Angular validation-->
+        <form name="imovelForm" ng-submit="atualizaImovel()" novalidate>
+        
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            
+            <div class="form-group" ng-class="{'has-error' : imovelForm.proprietario.$invalid && imovelForm.proprietario.$dirty}">
+                <label for="tipo">Artista:</label>
+            <span ng-class="{'glyphicon glyphicon-ok' : imovelForm.proprietario.$valid && imovelForm.proprietario.$dirty}"></span>
+
+            <input id="proprietario" name="proprietario" type="text" class="form-control" maxlength="33" ng-model="imovel.proprietario" required ng-minlength="4" ng-maxlength="33"/>
+                       
+                <p class="help-block" ng-show="imovelForm.proprietario.$error.required">Adicione um artista</p>
+                <p class="help-block" ng-show="imovelForm.proprietario.$error.minlength">O nome deve ter ao menos 4 caracteres.</p>
+                <p class="help-block" ng-show="imovelForm.proprietario.$error.maxlength">O nome nao pode ser maior que 33 caracteres.</p>
+                       
+            </div>
+            <div class="form-group" ng-class="{'has-error' : imovelForm.tipo.$invalid && imovelForm.tipo.$dirty}">
+                <label for="tipo">Estilo:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : imovelForm.tipo.$valid && imovelForm.tipo.$dirty}"></span>
+                <input id="tipo" name="tipo" type="text" class="form-control" maxlength="50" ng-model="imovel.tipo"
+                       required ng-minlength="2" ng-maxlength="50"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="imovelForm.tipo.$error.required">Adicione um estilo musical</p>
+                <p class="help-block" ng-show="imovelForm.tipo.$error.minlength">O nome deve ter ao menos 2 caracteres.</p>
+                <p class="help-block" ng-show="imovelForm.tipo.$error.maxlength">O nome nao pode ser maior que 50 caracteres.</p>
+            </div>
+
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : imovelForm.descricao.$invalid && imovelForm.descricao.$dirty}">
+                <label for="descricao">Nome:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : imovelForm.descricao.$valid && imovelForm.descricao.$dirty}"></span>
+
+                <input id="descricao" name="descricao" type="text" class="form-control" maxlength="100"
+                       ng-model="imovel.descricao" required ng-minlength="5" ng-maxlength="100"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="imovelForm.descricao.$error.required">Adicione um Nome</p>
+                <p class="help-block" ng-show="imovelForm.descricao.$error.minlength">O nome deve ter ao menos 5 caracteres.</p>
+                <p class="help-block" ng-show="imovelForm.descricao.$error.maxlength">O nome nao pode ser maior que 100 caracteres.</p>
+            </div>
+			
+			<div class="form-group" ng-class="{'has-error' : imovelForm.endereco.$invalid && imovelForm.endereco.$dirty}">
+                <label for="endereco">Album:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : imovelForm.endereco.$valid && imovelForm.endereco.$dirty}"></span>
+
+                <input id="endereco" name="endereco" type="text" class="form-control" maxlength="80"
+                       ng-model="imovel.endereco"  required ng-minlength="5" ng-maxlength="80"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="imovelForm.endereco.$error.required">Adicione um Album</p>
+                <p class="help-block" ng-show="imovelForm.endereco.$error.minlength">O nome deve ter ao menos 5 caracteres.</p>
+                <p class="help-block" ng-show="imovelForm.endereco.$error.maxlength">O nome nao pode ser maior que 80 caracteres.</p>
+            </div>
+			
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : imovelForm.fotoUrl.$invalid && imovelForm.fotoUrl.$dirty}">
+                <label for="fotoUrl">Link URL:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : imovelForm.fotoUrl.$valid && imovelForm.fotoUrl.$dirty}"></span>
+
+                <input id="fotoUrl" name="fotoUrl" type="url" class="form-control" maxlength="500" ng-model="imovel.fotoUrl" required/>
+
+                <!-- Validation messages to be displayed on required and invalid. Type 'url' makes checks to a proper url format. -->
+                <p class="help-block" ng-show="imovelForm.fotoUrl.$error.required">Adicione Link URL</p>
+                <p class="help-block" ng-show="imovelForm.fotoUrl.$invalid && imovelForm.fotoUrl.$dirty">URL do Link Invalido.</p>
+            </div>
+			<br>
+            <div class="avatar" ng-if="imovel.fotoUrl">
+                <img ng-src="{{imovel.fotoUrl}}" width="300" height="150"/>
+            </div>
+
+            <!-- Form buttons. The 'Save' button is only enabled when the form is valid. -->
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" ng-click="clearForm()">Limpar Campos</button>
+                
+                <button type="button" class="btn btn-primary" ng-hide="imovelForm.$invalid" >Apagar</button>
+                <!-- "apagaImovel" -->
+                <button type="submit" class="btn btn-primary" ng-disabled="imovelForm.$invalid">Salvar</button>
+            </div>
+           
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

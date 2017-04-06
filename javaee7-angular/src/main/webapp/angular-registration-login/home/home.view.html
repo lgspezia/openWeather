@@ -1,0 +1,13 @@
+﻿<h1>Olá {{vm.user.firstName}}!</h1>
+<p>Você está na página de administrador de login</p>
+<h3>Usuários listados no sistema:</h3>
+<ul>
+    <li ng-repeat="user in vm.allUsers">
+        {{user.username}} ({{user.firstName}} {{user.lastName}})
+        - <a href="#" ng-click="vm.deleteUser(user.id)">Delete</a>
+    </li>
+</ul>
+
+ <a href="http://localhost:8080/javaee7-angular/index_imovel.html">Encontre Seu Imóvel</a> 
+<p>&nbsp;</p>
+<p><a href="#/login" class="btn btn-primary">Logout</a></p>

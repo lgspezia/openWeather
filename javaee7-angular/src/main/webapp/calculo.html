@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!-- Declares the root element that allows behaviour to be modified through Angular custom HTML tags. -->
+<html ng-app="calculos">
+<head>
+    <title>javaee7-angular</title>
+
+    <!-- build:css css/third-party.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!-- endbuild -->
+
+    <!-- build:js lib/third-party.js -->
+    <!-- bower:js -->
+    <script src="lib/dependencies/jquery.min.js"></script>
+    <script src="lib/dependencies/angular.min.js"></script>
+    <script src="lib/dependencies/angular-resource.min.js"></script>
+    <script src="lib/dependencies/ng-grid-2.0.11.min.js"></script>
+    <script src="lib/dependencies/ui-bootstrap-tpls.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js script/all.js -->
+    <script src="script/calculo.js"></script>
+    <!-- endbuild -->
+</head>
+
+<body>
+
+<h1>Calculo da Parcela</h1>
+
+<br/>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the feedback messages.-->
+<div class="message" ng-controller="alertMessagesController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+<br>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the grid.-->
+
+<!-- Specify a Angular controller script that binds Javascript variables to the form.-->
+<div class="form" ng-controller="calculosFormController">
+
+	<div ng-if="calculo.id == null">
+        <h3>Primeiro Calculo:</h3>
+    </div>
+
+    <div>
+        <!-- Specify the function to be called on submit and disable HTML5 validation, since we're using Angular validation-->
+        <form name="calculoForm" ng-submit="updateCalculo()" novalidate>
+
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <div class="form-group" ng-class="{'has-error' : calculoForm.valorFinanciado.$invalid && calculoForm.valorFinanciado.$dirty}">
+                <label for="valorFinanciado">Valor Financiado Inicial:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : calculoForm.valorFinanciado.$valid && calculoForm.valorFinanciado.$dirty}"></span>
+
+                <input id="valorFinanciado" name="valorFinanciado" type="text" class="form-control" maxlength="50" 
+                ng-model="calculo.valorFinanciado" required ng-minlength="3" ng-maxlength="20"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="calculoForm.valorFinanciado.$error.required">Valor inicial do bem.</p>
+                <p class="help-block" ng-show="calculoForm.valorFinanciado.$error.minlength">pelo menos 3 algarismos, sem R$.</p>
+                <p class="help-block" ng-show="calculoForm.valorFinanciado.$error.maxlength">O limite é de 20 caracteres.</p>
+            </div>
+
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <br/>
+            <div class="form-group" ng-class="{'has-error' : calculoForm.valorParcela01.$invalid && calculoForm.valorParcela01.$dirty}">
+                <label for="valorParcela01">Valor da Primeira Parcela:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : calculoForm.valorParcela01.$valid && calculoForm.valorParcela01.$dirty}"></span>
+
+                <input id="valorParcela01" name="valorParcela01" type="number" class="form-control" maxlength="100"
+                       ng-model="calculo.valorParcela01" required ng-minlength="3" ng-maxlength="20"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="calculoForm.valorParcela01.$error.required">Valor da ultima parcela paga.</p>
+                <p class="help-block" ng-show="calculoForm.valorParcela01.$error.minlength">Digite o valor sem R$.</p>
+                <p class="help-block" ng-show="calculoForm.valorParcela01.$error.maxlength">O limite é de 20 caracteres.</p>
+            </div>
+
+			<!--  -->
+			<div class="form-group" ng-class="{'has-error' : calculoForm.valorParcelaAtual.$invalid && calculoForm.valorParcelaAtual.$dirty}">
+                <label for="valorParcelaAtual">Valor da Parcela atual:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : calculoForm.valorParcelaAtual.$valid && calculoForm.valorParcelaAtual.$dirty}"></span>
+
+                <input id="valorParcelaAtual" name="valorParcelaAtual" type="number" class="form-control" maxlength="100"
+                       ng-model="calculo.valorParcelaAtual"
+                       required ng-minlength="1" ng-maxlength="4"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="calculoForm.valorParcelaAtual.$error.required">Ex. 12 de 30.</p>
+                <p class="help-block" ng-show="calculoForm.valorParcelaAtual.$error.minlength">Digite ou clique.</p>
+                <p class="help-block" ng-show="calculoForm.valorParcelaAtual.$error.maxlength">O limite é até 9.999.</p>
+            </div>
+            
+            <!-- // -->
+            
+            <!-- Display an error if the input is invalid and is dirty (only when someone changes the value) -->
+            <br/>
+            <div class="form-group" ng-class="{'has-error' : calculoForm.numeroParcelaAtual.$invalid && calculoForm.numeroParcelaAtual.$dirty}">
+                <label for="numeroParcelaAtual">Numero da Parcela atual (quantas foram quitadas):</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : calculoForm.numeroParcelaAtual.$valid && calculoForm.numeroParcelaAtual.$dirty}"></span>
+
+                <input id="numeroParcelaAtual" name="numeroParcelaAtual" type="number" class="form-control" maxlength="4"
+                       ng-model="calculo.numeroParcelaAtual" required/>
+
+                <!-- Validation messages to be displayed on required and invalid. Type 'url' makes checks to a proper url format. -->
+                <p class="help-block" ng-show="calculoForm.numeroParcelaAtual.$error.required">Ex. 12 de 30</p>
+                <p class="help-block" ng-show="calculoForm.numeroParcelaAtual.$invalid && calculoForm.numeroParcelaAtual.$dirty">Invalid Image URL.</p>
+            </div>
+
+            <!-- <div class="avatar" ng-if="person.imageUrl">
+                <img ng-src="{{person.imageUrl}}" width="400" height="250"/>
+            </div> -->
+
+            <!-- Form buttons. The 'Save' button is only enabled when the form is valid. -->
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary" ng-disabled="calculoForm.$invalid">Calcular</button>
+                <button type="button" class="btn btn-primary" ng-click="calculaJuros()">Juros</button>
+                <button type="button" class="btn btn-primary" ng-click="clearForm()">Apagar</button>
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

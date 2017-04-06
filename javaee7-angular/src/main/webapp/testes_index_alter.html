@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- Declares the root element that allows behaviour to be modified through Angular custom HTML tags. -->
+<html data-ng-app="imoveis">
+<head>
+    <title>Cadastro de Imoveis</title>
+
+    <!-- build:css css/third-party.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!-- endbuild -->
+
+    <!-- build:js lib/third-party.js -->
+    <!-- bower:js -->
+    <script src="lib/dependencies/jquery.js"></script>
+    <script src="lib/dependencies/angular.js"></script>
+    <script src="lib/dependencies/angular-resource.min.js"></script>
+    <script src="lib/dependencies/ng-grid-2.0.11.min.js"></script>
+    <script src="lib/dependencies/ui-bootstrap-tpls-imovel.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js script/all.js -->
+    <script src="script/imovel.js"></script>
+    <!-- endbuild -->
+</head>
+
+<body data-ng-init="names=['jao s silva','john deere','mary jane','mary xoxota'] " >
+<h1>Spezia Imoveis - Cadastro</h1>
+Nome:
+<br/>
+<input type="text"data-ng-model="name" /> {{ name }}
+<br/>
+
+<ul>
+<li data-ng-repeat="nomepessoa in names">{{ nomepessoa }}</li>
+<li data-ng-repeat="cust in custom | orderBy: `nomepessoa`">{{ cust.nomepessoa | uppercase }}</li>
+
+</ul>
+
+<input type="text"data-ng-model="nameText" data-ng-init="custom=[{name: `rer`, cidade: `botu`},{name: `rertttt`, cidade: `botusddd`}]"/> 
+<ul>
+<li data-ng-repeat = "cust in custom | filter:nameText | orderBy: `nomepessoa`" >
+	{{ cust.nomepessoa }} - {{ cust.cidade }} </li>
+</ul>
+</body>
+</html>

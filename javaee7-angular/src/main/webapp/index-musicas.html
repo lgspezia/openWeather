@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!-- elemento que permite tags personalizadas angular -->
+<html ng-app="musicas">
+<head>
+    <title>Cadastro de Musicas</title>
+
+    <!-- build:css css/third-party.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!-- endbuild -->
+
+    <!-- build:js lib/third-party.js -->
+    <!-- bower:js -->
+    <script src="lib/dependencies/jquery.js"></script>
+    <script src="lib/dependencies/angular.js"></script>
+    <script src="lib/dependencies/angular-resource.min.js"></script>
+    <script src="lib/dependencies/ng-grid-2.0.11.min.js"></script>
+    <script src="lib/dependencies/ui-bootstrap-tpls-musica.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+   
+    <script src="script/musica.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script> --> 
+    <!-- endbuild -->
+    
+</head>
+
+<body>
+
+<h1>Spezia Musicas - Cadastro</h1>
+<br/>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the feedback messages.-->
+<div class="message" ng-controller="alertMessagesController">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<br>
+<!-- Specify a Angular controller script that binds Javascript variables to the grid.-->
+<div class="grid" ng-controller="musicasListController">
+    <div>
+   
+        <h3>Lista de Musicas</h3>
+    </div>
+
+    <!-- Binds the grid component to be displayed. -->
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+
+    <!--  Bind the pagination component to be displayed. -->
+    <pagination direction-links="true" boundary-links="true"
+                total-items="musicas.totalResultados" items-per-page="musicas.tamanhoPagina"
+                ng-model="musicas.paginaAtual" ng-change="refreshGrid()">
+    </pagination>
+ 
+ 	
+	</div>
+
+
+<!-- Specify a Angular controller script that binds Javascript variables to the form.-->
+<div class="form" ng-controller="musicasFormController">
+    <!-- Verify person, if there is no id present, that we are Adding a Person -->
+    <div ng-if="musica.id == null">
+        <h3>Adicionar uma Musica</h3>
+    </div>
+    <!-- Otherwise it's an Edit -->
+    <div ng-if="musica.id != null">
+        <h3>Editar uma Musica</h3>
+    </div>
+
+    <div>
+       
+        <form name="musicaForm" ng-submit="atualizaMusica()" novalidate>
+        
+            <!-- Mostra erro quando input é invalido e campo preenchido -->
+            
+            <div class="form-group" ng-class="{'has-error' : musicaForm.proprietario.$invalid && musicaForm.proprietario.$dirty}">
+                <label for="estilo">Artista:</label>
+            <span ng-class="{'glyphicon glyphicon-ok' : musicaForm.proprietario.$valid && musicaForm.proprietario.$dirty}"></span>
+
+            <input id="artista" name="artista" type="text" class="form-control" maxlength="33" ng-model="musica.artista" required ng-minlength="4" ng-maxlength="33"/>
+                       
+                <p class="help-block" ng-show="musicaForm.artista.$error.required">Adicione um artista</p>
+                <p class="help-block" ng-show="musicaForm.artista.$error.minlength">O nome deve ter ao menos 4 caracteres.</p>
+                <p class="help-block" ng-show="musicaForm.artista.$error.maxlength">O nome nao pode ser maior que 33 caracteres.</p>
+                       
+            </div>
+            <div class="form-group" ng-class="{'has-error' : musicaForm.estilo.$invalid && musicaForm.estilo.$dirty}">
+                <label for="estilo">Estilo:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : musicaForm.estilo.$valid && musicaForm.estilo.$dirty}"></span>
+                <input id="estilo" name="estilo" type="text" class="form-control" maxlength="50" ng-model="musica.estilo"
+                       required ng-minlength="2" ng-maxlength="50"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="musicaForm.estilo.$error.required">Adicione um estilo musical</p>
+                <p class="help-block" ng-show="musicaForm.estilo.$error.minlength">O nome deve ter ao menos 2 caracteres.</p>
+                <p class="help-block" ng-show="musicaForm.estilo.$error.maxlength">O nome nao pode ser maior que 50 caracteres.</p>
+            </div>
+
+            <!-- Display an error if the input is invalid and is dirty and value was changed  -->
+            <div class="form-group" ng-class="{'has-error' : musicaForm.nome.$invalid && musicaForm.nome.$dirty}">
+                <label for="nome">Nome:</label>
+                <!-- Display a check when the field is valid and was modified -->
+                <span ng-class="{'glyphicon glyphicon-ok' : musicaForm.nome.$valid && musicaForm.nome.$dirty}"></span>
+
+                <input id="nome" name="nome" type="text" class="form-control" maxlength="100"
+                       ng-model="musica.nome" required ng-minlength="5" ng-maxlength="100"/>
+
+                <!-- Validation messages to be displayed on required, minlength and maxlength -->
+                <p class="help-block" ng-show="musicaForm.nome.$error.required">Adicione um Nome</p>
+                <p class="help-block" ng-show="musicaForm.nome.$error.minlength">O nome deve ter ao menos 5 caracteres.</p>
+                <p class="help-block" ng-show="musicaForm.nome.$error.maxlength">O nome nao pode ser maior que 100 caracteres.</p>
+            </div>
+			
+			<div class="form-group" ng-class="{'has-error' : musicaForm.album.$invalid && musicaForm.album.$dirty}">
+                <label for="album">Album:</label>
+                <!-- Exibir um check quando o campo foi modificado -->
+                <span ng-class="{'glyphicon glyphicon-ok' : musicaForm.album.$valid && musicaForm.album.$dirty}"></span>
+
+                <input id="album" name="album" type="text" class="form-control" maxlength="80"
+                       ng-model="musica.album"  required ng-minlength="5" ng-maxlength="80"/>
+
+                <!--  validação exibida se necessário, minlength e maxlength -->
+                <p class="help-block" ng-show="musicaForm.album.$error.required">Adicione um Album</p>
+                <p class="help-block" ng-show="musicaForm.album.$error.minlength">O nome deve ter ao menos 5 caracteres.</p>
+                <p class="help-block" ng-show="musicaForm.album.$error.maxlength">O nome nao pode ser maior que 80 caracteres.</p>
+            </div>
+			
+            <!-- Exibe erro se a entrada é inválida e está suja (somente quando alguém altera o valor) -->
+            <div class="form-group" ng-class="{'has-error' : musicaForm.linkUrl.$invalid && musicaForm.linkUrl.$dirty}">
+                <label for="linkUrl">Link URL:</label>
+                <!-- exibe o  check quando o campo é válido e foi modificado -->
+                <span ng-class="{'glyphicon glyphicon-ok' : musicaForm.linkUrl.$valid && musicaForm.linkUrl.$dirty}"></span>
+
+                <input id="linkUrl" name="linkUrl" type="url" class="form-control" maxlength="500" ng-model="musica.linkUrl" required/>
+
+                <!-- Validation messages to be displayed on required and invalid. Type 'url' makes checks to a proper url format. -->
+                <p class="help-block" ng-show="musicaForm.linkUrl.$error.required">Adicione Link URL</p>
+                <p class="help-block" ng-show="musicaForm.linkUrl.$invalid && musicaForm.linkUrl.$dirty">URL do Link Invalido.</p>
+            </div>
+			<br>
+            <div class="avatar" ng-if="musica.linkUrl">
+                <img ng-src="{{musica.linkUrl}}" width="300" height="150"/>
+            </div>
+
+            <!-- botoes. The 'Salvar' button is only enabled when the form is valid. -->
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" ng-click="clearForm()">Limpar Campos</button>
+                
+                <button type="button" class="btn btn-primary" ng-hide="musicaForm.$invalid" >Apagar</button>
+                <!-- "apaga musica" -->
+                <button type="submit" class="btn btn-primary" ng-disabled="musicaForm.$invalid">Salvar</button>
+            </div>
+           
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

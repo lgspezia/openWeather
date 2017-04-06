@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.org/seam/faces"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<f:view>
+		<h:head />
+		<h:body>
+			<script>
+	   		 $ = jQuery;
+	    
+			function showImageProgress() {
+				$("#progressDiv").show();
+				$('#globalStatus .rf-st-start').show()
+			}
+			
+			function hideImageProgressDiv(){
+				$("#progressDiv").hide();
+			}
+			
+			function showImageProgressDiv(){
+				$("#progressDiv").show();
+			}
+			</script>
+			Test
+			<h:form id="buttonForm">
+				<a4j:commandButton id="button" action="#{testAction.click}" value="Click" render="buttonForm" execute="button"
+					rendered="#{testAction.clickNumber &lt; 1}" />
+				<a4j:commandButton id="button2" action="#{testAction.click}" value="Click always seen (#{testAction.clickNumber})" render="buttonForm" execute="button2" />
+			</h:form>
+			
+			<div id="progressDiv" class="progress_image" style="display: none;">
+				<a4j:status id="globalStatus" onstart="showImageProgressDiv();" onstop="hideImageProgressDiv();" onerror="hideImageProgressDiv();">
+					<f:facet name="start">
+						<h:graphicImage value="/img/progress.gif" />
+					</f:facet>
+				</a4j:status>
+			</div>
+		</h:body>
+	</f:view>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+ 
+    <persistence-unit name="javaee7-angular" transaction-type="JTA">
+ 
+        <!-- Ao invés de utilizar o seguinte provider, como de costume: -->
+        <!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+        <!-- Vamos usar o provider abaixo: -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+ 
+        <!-- Não se esqueça de informar ao persistence.xml qual datasource você estará usando, para isso siga o exemplo abaixo: -->
+        <jta-data-source>java:jboss/datasources/javaee7-angular</jta-data-source> <!-- ExampleDS -->
+        <!-- Obs.: Caso seja necessário você rodar uma classe main para popular o banco de dados, remova a tag acima. -->
+ 
+        <!-- <class>com.lucas.livraria.model.Livro</class> -->
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+ 	
+        <properties>
+            <!-- Uma vez que você está usando datasource não é necessário configurar novamente o acesso ao banco -->
+            <!-- Coloquei aqui apenas como um exemplo -->
+            <!-- <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/test" />
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <property name="javax.persistence.jdbc.password" value="1" />
+ 
+            <property name="javax.persistence.validation.mode" value="none" /> -->
+ 
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+        </properties>
+    </persistence-unit>
+</persistence>
+
+<!-- exemplo de :
+https://desenvolvo.wordpress.com/2013/08/27/configurando-datasource-no-jboss-wildfly-com-mysql/ -->

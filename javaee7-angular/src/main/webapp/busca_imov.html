@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!-- Declares the root element that allows behaviour to be modified through Angular custom HTML tags. -->
+<html ng-app="imoveis">
+<head>
+    <title>Cadastro de Imoveis</title>
+
+    <!-- build:css css/third-party.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!-- endbuild -->
+
+    <!-- build:js lib/third-party.js -->
+    <!-- bower:js -->
+    <script src="lib/dependencies/jquery.min.js"></script>
+    <script src="lib/dependencies/angular.min.js"></script>
+    <script src="lib/dependencies/angular-resource.min.js"></script>
+    <script src="lib/dependencies/ng-grid-2.0.11.min.js"></script>
+    <script src="lib/dependencies/ui-bootstrap-tpls.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    
+    <!-- <script src="lib/dependencies/script-busca.js"></script> --> 
+    <!-- <script src="script/imovel.js"></script> -->
+    <!-- <script src="script/filtro.js"></script> -->
+    <script src="script/imovel_filtro.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.1/angular.min.js"></script> --> 
+    <!-- endbuild -->
+    
+</head>
+
+<body>
+
+<h1>Spezia Imoveis</h1>
+<br/>
+
+<!-- Specify a Angular controller script that binds Javascript variables to the feedback messages.-->
+
+
+<br>
+<!-- Specify a Angular controller script that binds Javascript variables to the grid.-->
+<div class="grid" ng-controller="imoveisFilterController">
+    <div>  
+        <h3>Busca de Imoveis</h3>
+    </div>
+	
+    <!-- Binds the grid component to be displayed. -->
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+
+    <!--  Bind the pagination component to be displayed. -->
+    <pagination direction-links="true" boundary-links="true"
+                total-items="imoveis.totalResultados" items-per-page="imoveis.tamanhoPagina"
+                ng-model="imoveis.paginaAtual" ng-change="refreshGrid()">
+    </pagination>
+
+ 	<h3>Busca Imoveis</h3>
+   
+<br/>
+
+0<input type="text" ng-model="filterOpt.filterTxt" />
+
+	
+<!-- Specify a Angular controller script that binds Javascript variables to the form.-->
+
+
+ <!-- novo exemplo -->
+
+  <div class="row">
+   
+      <strong>Filtro:</strong>
+      1<input type="text" ng-model="filterOptions.filterText" />
+     
+   
+	2<input type="text" ng-model="filterOpt.filterTxt" ng-model="lowerLimit" ng-init="lowerLimit = 30" />   
+  </div>
+</div>
+
+      <br/>
+      <br/>   
+
+</body>
+</html>
