@@ -75,16 +75,15 @@ public class ChamadoData {
     	
     	try{
     		// consulta JPQL
-    		//list = HibernateUtil.getSessionFactory().openSession().createQuery("from Chamado").list();
+    		list = HibernateUtil.getSessionFactory().openSession().createQuery("from Chamado").list();
     		//testes
-        	list.add(testaCriaModela(1));
+        	/*list.add(testaCriaModela(1));
         	list.add(testaCriaModela(2));
-        	list.add(testaCriaModela(3));
+        	list.add(testaCriaModela(3));*/
     	} catch(Exception ex){
     		
     		ex.getStackTrace();
     	}
-    	
     		return list;
     }
     
