@@ -16,7 +16,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class MyApplication extends ResourceConfig {
 
     public MyApplication() {
-        //packages("io.github.dggodoi.aprendendo.java.backend.controllers");
+        //packages("io.github.lgspezia.java.back.controllers");
+    	//java_back/tasks-java-backend-master/src/main/java/io
         packages("io.java.back.controllers");        
     }
 }

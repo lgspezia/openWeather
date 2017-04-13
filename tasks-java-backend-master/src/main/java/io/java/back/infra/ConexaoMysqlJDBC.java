@@ -27,7 +27,10 @@ public class ConexaoMysqlJDBC implements ConexaoJDBC {
         properties.put("user", "root");
         properties.put("password", "1");
 
-        this.connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:5432/test?ApplicationName=TaskList", properties);
+        //antigo postgres
+        //this.connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:5432/test?ApplicationName=TaskList", properties);
+        
+        this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test",properties.getProperty("user"),properties.getProperty("password")); //tasks-java-backend
         this.connection.setAutoCommit(false);
     }
 
