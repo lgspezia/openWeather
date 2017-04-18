@@ -1,0 +1,15 @@
+{
+  "name": "teste-hbsys",
+  "description": "A weather forecast app written in AngularJS based on OpenWeatherMap API calls",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node scripts/web-server.js"
+  },
+  "devDependencies": {
+      "phantomjs" : "*",
+      "karma" : "*",
+      "karma-junit-reporter" : "*",
+      "karma-jasmine" : "*",
+      "karma-ng-scenario" : "*"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "teste-hbsys",
+  "version": "0.0.1",
+  "description": "A weather forecast app written in AngularJS.",
+  "main": "resources/app/index.html",
+  "keywords": [
+    "angular",
+    "openweathermap",
+    "weather"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/angular-openweather-app",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.0.0",
+    "iso-3166-country-codes-angular": "~1.0.2"
+  }
+}
