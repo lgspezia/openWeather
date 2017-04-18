@@ -9,8 +9,6 @@ import io.java.back.business.ChamadoData;
 import io.java.back.data.Chamado;
 import io.java.back.enumer.chamado.Status;
 
-import java.io.Console;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
